@@ -127,7 +127,7 @@ dmypy.json
 *.tsv
 *.pkl
 *.msgpack
-*.txt
+#*.txt
 gpt_cache/
 openai_gpt/
 
