@@ -15,6 +15,7 @@ License: GNU GPLv3
 '''
 
 import os
+import json
 import torch
 import numpy as np
 import pickle
@@ -247,7 +248,12 @@ if __name__ == "__main__":
     N_INGREDIENTS = 0
     if ingr_emb:
         print('INGR EMBEDDING')
-        n_ingredients_og = max(chain.from_iterable(df_r['ingredient_ids'].values)) + 1
+        print(df_r['ingredient_ids'])
+        # Questionable logic here the padding is not functional and does not 
+        
+#        df_r_ing =  df_r['ingredient_ids'].apply(json.loads).values
+        df_r_ing = df_r['ingredient_ids'].values
+        n_ingredients_og = max(chain.from_iterable(df_r_ing)) + 1
         PAD_INGR = n_ingredients_og
         N_INGREDIENTS = n_ingredients_og + 1
 
