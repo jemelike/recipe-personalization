@@ -252,7 +252,8 @@ if __name__ == "__main__":
         # Questionable logic here the padding is not functional and does not 
         
 #        df_r_ing =  df_r['ingredient_ids'].apply(json.loads).values
-        df_r_ing = df_r['ingredient_ids'].values
+        df_r_ing = df_r['ingredient_ids'].apply(json.loads).values
+        print(type(df_r_ing))
         n_ingredients_og = max(chain.from_iterable(df_r_ing)) + 1
         PAD_INGR = n_ingredients_og
         N_INGREDIENTS = n_ingredients_og + 1
