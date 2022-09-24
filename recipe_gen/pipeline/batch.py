@@ -82,40 +82,42 @@ def load_full_data(dataset_folder,
 
     return train_df, valid_df, test_df, user_items, df_r, ingr_map
 
-def pad_name(name_tokens:list, max_name_tokens:int=15) -> list:
-    padded_name_tokens = None
-    try:
-        padded_name_tokens = name_tokens + [PAD_INDEX]*(max_name_tokens - len(name_tokens))
-    except TypeError:
-        if isinstance(name_tokens, str) :
-            name_tokens = json.loads(name_tokens)
-            padded_name_tokens = name_tokens + [PAD_INDEX]*(max_name_tokens - len(name_tokens))
-        else:
-            raise TypeError(f"name_tokens is {type(name_tokens)}")
-    except Exception:
-        raise TypeError(f"name_tokens is {type(name_tokens)}")
-    finally:
-        return padded_name_tokens
 
-def pad_steps(step_tokens:list, max_step_tokens:int=256):
-    if not isinstance(step_tokens, list):
-        raise TypeError(f"step_tokens is {type(step_tokens)}")
-    # Pad steps to maximum step length
-    return step_tokens + [PAD_INDEX]*(max_step_tokens - len(step_tokens))
+def __standard_token_padding(tokens:list, max_tokens:int, padding=PAD_INDEX):
+    padded_tokens = None
+    try:
+        padded_tokens = tokens + [padding]*(max_tokens - len(tokens))
+    except TypeError:
+        if isinstance(tokens, str) :
+            tokens = json.loads(tokens)
+            padded_tokens =  tokens + [padding]*(max_tokens - len(tokens))
+        else:
+            raise TypeError(f"tokens is {type(tokens)}")
+    except Exception:
+        raise Exception
+    finally:
+        return padded_tokens
+
+
+def pad_name(name_tokens:list, max_name_tokens:int=15) -> list:
+    """
+    Pads the name tokens
+    """
+    return __standard_token_padding(name_tokens, max_name_tokens)
+
+def pad_steps(step_tokens:list, max_step_tokens:int=256) -> list:
+    """
+    Padds the step tokens
+    """
+    return __standard_token_padding(step_tokens, max_step_tokens)
 
 def pad_ingredients(ingredient_tokens:list, max_ingredients:int=20, max_ingr_tokens:int=20):
-    if not isinstance(ingredient_tokens, list):
-        raise TypeError(f"step_tokens is {type(ingredient_tokens)}")
-
     # Pad ingredients to maximum ingredient length
-    new_tokens = [
-        i[:max_ingr_tokens] + [PAD_INDEX]*(max_ingr_tokens - len(i[:max_ingr_tokens])) for
-        i in ingredient_tokens[:max_ingredients]
-    ]
+    new_tokens = [ __standard_token_padding(i[:max_ingr_tokens], max_ingr_tokens)  for i in ingredient_tokens[:max_ingredients] ]
 
     # Pad with empty ingredients
-    new_tokens += [[PAD_INDEX]*max_ingr_tokens] *\
-        (max_ingredients - len(ingredient_tokens[:max_ingredients]))
+    #new_tokens += [[PAD_INDEX]*max_ingr_tokens] * (max_ingredients - len(ingredient_tokens[:max_ingredients]))
+    new_tokens += [__standard_token_padding([],max_ingr_tokens )]
     return new_tokens
 
 def pad_ingredient_ids(ingredient_ids:list, max_ingredients:int, pad_ingredient:int):
