@@ -260,7 +260,7 @@ if __name__ == "__main__":
         N_INGREDIENTS = n_ingredients_og + 1
 
     df_r = pad_recipe_info(
-        df_r, max_name_tokens=MAX_NAME, min_ingredients=3, max_ingredients=MAX_INGR,
+        df_r, pad_ingr=PAD_INGR, max_name_tokens=MAX_NAME, min_ingredients=3, max_ingredients=MAX_INGR,
         max_ingr_tokens=MAX_INGR_TOK, max_step_tokens=MAX_STEP_TOK
     )
 

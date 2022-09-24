@@ -137,7 +137,7 @@ def get_technique_embedding_indices(technique_mask):
     return np.arange(N_TECHNIQUES) * technique_onehot + \
         (technique_onehot == 0) * PAD_TECHNIQUE_INDEX
 
-def pad_recipe_info(df_r, max_name_tokens=15, min_ingredients=3, max_ingredients=20,
+def pad_recipe_info(df_r,pad_ingr, max_name_tokens=15, min_ingredients=3, max_ingredients=20,
                     max_ingr_tokens=20, max_step_tokens=256):
     """
     Pads relevant recipe tokenized representations
@@ -194,8 +194,8 @@ def pad_recipe_info(df_r, max_name_tokens=15, min_ingredients=3, max_ingredients
 
     # Pad ingredient IDs
     df_r['ingredient_id_mask'] = df_r['ingredient_ids'].agg(lambda i: get_ingr_mask(i, max_ingredients))
-    n_ingredients_og = max(chain.from_iterable(df_r['ingredient_ids'].apply(json.loads).values)) + 1
-    pad_ingr = n_ingredients_og
+    # n_ingredients_og = max(chain.from_iterable(df_r['ingredient_ids'].apply(json.loads).values)) + 1
+    # pad_ingr = n_ingredients_og
     # n_ingredients = n_ingredients_og + 1
     df_r['ingredient_ids'] = df_r['ingredient_ids'].agg(
         lambda i: pad_ingredient_ids(i, max_ingredients, pad_ingr)
