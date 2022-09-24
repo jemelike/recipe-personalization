@@ -14,6 +14,7 @@ Copyright Shuyang Li & Bodhisattwa Majumder
 License: GNU GPLv3
 '''
 
+import json
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -81,8 +82,20 @@ def load_full_data(dataset_folder,
 
     return train_df, valid_df, test_df, user_items, df_r, ingr_map
 
-def pad_name(name_tokens:list, max_name_tokens:int=15):
-    return name_tokens + [PAD_INDEX]*(max_name_tokens - len(name_tokens))
+def pad_name(name_tokens:list, max_name_tokens:int=15) -> list:
+    padded_name_tokens = None
+    try:
+        padded_name_tokens = name_tokens + [PAD_INDEX]*(max_name_tokens - len(name_tokens))
+    except TypeError:
+        if isinstance(name_tokens, str) :
+            name_tokens = json.loads(name_tokens)
+            padded_name_tokens = name_tokens + [PAD_INDEX]*(max_name_tokens - len(name_tokens))
+        else:
+            raise TypeError(f"name_tokens is {type(name_tokens)}")
+    except Exception:
+        raise TypeError(f"name_tokens is {type(name_tokens)}")
+    finally:
+        return padded_name_tokens
 
 def pad_steps(step_tokens:list, max_step_tokens:int=256):
     if not isinstance(step_tokens, list):
