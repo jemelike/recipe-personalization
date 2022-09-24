@@ -81,14 +81,19 @@ def load_full_data(dataset_folder,
 
     return train_df, valid_df, test_df, user_items, df_r, ingr_map
 
-def pad_name(name_tokens, max_name_tokens=15):
+def pad_name(name_tokens:list, max_name_tokens:int=15):
     return name_tokens + [PAD_INDEX]*(max_name_tokens - len(name_tokens))
 
-def pad_steps(step_tokens, max_step_tokens=256):
+def pad_steps(step_tokens:list, max_step_tokens:int=256):
+    if not isinstance(step_tokens, list):
+        raise TypeError(f"step_tokens is {type(step_tokens)}")
     # Pad steps to maximum step length
     return step_tokens + [PAD_INDEX]*(max_step_tokens - len(step_tokens))
 
-def pad_ingredients(ingredient_tokens, max_ingredients=20, max_ingr_tokens=20):
+def pad_ingredients(ingredient_tokens:list, max_ingredients:int=20, max_ingr_tokens:int=20):
+    if not isinstance(ingredient_tokens, list):
+        raise TypeError(f"step_tokens is {type(ingredient_tokens)}")
+
     # Pad ingredients to maximum ingredient length
     new_tokens = [
         i[:max_ingr_tokens] + [PAD_INDEX]*(max_ingr_tokens - len(i[:max_ingr_tokens])) for
@@ -100,7 +105,10 @@ def pad_ingredients(ingredient_tokens, max_ingredients=20, max_ingr_tokens=20):
         (max_ingredients - len(ingredient_tokens[:max_ingredients]))
     return new_tokens
 
-def pad_ingredient_ids(ingredient_ids, max_ingredients, pad_ingredient):
+def pad_ingredient_ids(ingredient_ids:list, max_ingredients:int, pad_ingredient:int):
+    if not isinstance(ingredient_ids, list):
+        raise TypeError(f"step_tokens is {type(ingredient_ids)}")
+
     # Pad ingredients to maximum ingredient length
     return ingredient_ids[:max_ingredients] + \
         [pad_ingredient]*(max_ingredients - len(ingredient_ids[:max_ingredients]))
