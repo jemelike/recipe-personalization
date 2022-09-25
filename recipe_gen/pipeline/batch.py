@@ -240,6 +240,7 @@ def load_recipe_tensors(df_r, device,
     # Load only relevant tensors to GPU
     total_size = 0
     for col, tens_type in zip(cols, types):
+        print(f"Creating tensor for {col}.")
         # Short-circuit
         if col is None:
             created_tensors.append(None)
@@ -252,7 +253,8 @@ def load_recipe_tensors(df_r, device,
             ).values.tolist()
             col_tensor = tens_type(flattened_ingredients).to(device)
         else:
-            col_tensor = tens_type(sum(df_r[col].values,[])).to(device)
+            # There mare functional changes that will likely need to be made each created tensor copies data. not serten
+            col_tensor = tens_type(sum(df_r[col].values,[])).to(device) 
         created_tensors.append(col_tensor)
         col_size = col_tensor.element_size() * col_tensor.nelement()
         total_size += col_size
