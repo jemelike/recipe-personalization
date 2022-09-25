@@ -274,7 +274,8 @@ if __name__ == "__main__":
         ('tech_mask_tensor', 'techniques_mask'),
     ]
     tensor_names, tensor_cols = zip(*tensors_to_load)
-
+    print(tensor_names)
+    print(tensor_cols)
     # Load tensors into memory
     memory_tensors = load_recipe_tensors(
         df_r, DEVICE, cols=tensor_cols, types=[torch.LongTensor] * len(tensors_to_load)

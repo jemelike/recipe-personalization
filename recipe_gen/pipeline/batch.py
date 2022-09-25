@@ -233,14 +233,15 @@ def load_recipe_tensors(df_r, device,
 
     df_r = df_r.set_index('i').sort_index()
     print('{} - Sorted recipes DF by recipe ID'.format(datetime.now() - start))
-
+    print(cols)
+    print(types)
     created_tensors = []
     max_col_len = max(len(k) for k in cols if k is not None)
-
+    
     # Load only relevant tensors to GPU
     total_size = 0
     for col, tens_type in zip(cols, types):
-        print(f"Creating tensor for {col}.")
+        print("{} - Creating tensor for {}.".format(datetime.now() - start, col))
         # Short-circuit
         if col is None:
             created_tensors.append(None)
