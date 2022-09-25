@@ -253,9 +253,9 @@ if __name__ == "__main__":
         
 #        df_r_ing =  df_r['ingredient_ids'].apply(json.loads).values
 # TODO Fix how values are loaded into data frames across code base
-        df_r_ing = df_r['ingredient_ids'].apply(json.loads).values
-        print(type(df_r_ing))
-        n_ingredients_og = max(chain.from_iterable(df_r_ing)) + 1
+        df_r['ingredient_ids'] = df_r['ingredient_ids'].apply(json.loads).values
+        print(type(df_r['ingredient_ids']))
+        n_ingredients_og = max(chain.from_iterable(df_r['ingredient_ids'])) + 1
         PAD_INGR = n_ingredients_og
         N_INGREDIENTS = n_ingredients_og + 1
 
