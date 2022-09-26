@@ -258,7 +258,7 @@ def load_recipe_tensors(df_r, device,
             col_tensor = tens_type(flattened_ingredients).to(device)
         else:
             # There mare functional changes that will likely need to be made each created tensor copies data. not serten
-            col_tensor = tens_type(sum(df_r[col].values,[])).to(device) 
+            col_tensor = tens_type(df_r[col].values.tolist()).to(device) 
         created_tensors.append(col_tensor)
         col_size = col_tensor.element_size() * col_tensor.nelement()
         total_size += col_size
