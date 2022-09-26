@@ -207,9 +207,6 @@ def pad_recipe_info(df_r, max_name_tokens=15, min_ingredients=3, max_ingredients
     # Pad techniques mask - we will never attend on the pad technique
     df_r['techniques'] =  df_r['techniques'].apply(json.loads)
     df_r['techniques_mask'] = df_r['techniques'].agg(lambda x: x + [sum(x) == 0])
-    print(df_r['techniques_mask'])
-    for t_mask in df_r['techniques_mask']:
-        print((type(t_mask), t_mask))
     df_r['techniques'] = df_r['techniques_mask'].agg(get_technique_embedding_indices)
     print('{} - Processed techniques and the associated masks'.format(
         datetime.now() - start
